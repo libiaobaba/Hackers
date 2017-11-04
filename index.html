@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ECharts demo</title>
+
+</head>
+<body>
+	<div id="map-wrap" style="height: 100vw;"></div>
+
+	
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=AkdIIYA1NOzj8G9NFt9VRcVsCkgLG4FS"></script>
+	<script type="text/javascript" src="js/echarts.min.js"></script>
+	<script type="text/javascript" src="js/bmap.js"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+
+	<script type="text/javascript">
+		var data = [
+		];
+		var geoCoordMap = {
+		}
+
+		var type = ''
+		// 2017-10-29  2017-11-04
+		var date = ''
+		// 0-24
+		var hour = ''
+		$.ajax({
+			url:'http://118.89.233.100/map/index/index/byDate',
+			type:'GET',
+			dataType:'JSON',
+			async:false,
+			data:{type:'demand',date:'2017-10-30',hour:'2'},
+			success:function(res) {
+				console.log(res) 
+				for (var i = res.data.length - 1; i >= 0; i--) {
+					// res.data[i]
+					geoCoordMap[''+i+''] = [res.data[i].longitude,res.data[i].latitude]
+					data[i] = {
+						name: ''+i+'',
+						value: res.data[i].value*50
+					}
+				}
+			}
+		})
+
+		var chart = echarts.init(document.getElementById('map-wrap'))
+		// chart.showLoading();
+		// chart.stopLoading();
+		
+
+		var convertData = function (data) {
+		    var res = [];
+		    for (var i = 0; i < data.length; i++) {
+		        var geoCoord = geoCoordMap[data[i].name];
+		        if (geoCoord) {
+		            res.push({
+		                value: geoCoord.concat(data[i].value)
+		            });
+		        }
+		    }
+		    return res;
+		};
+
+		option = {
+		    title: {
+		        text: '出行平台数据可视化',
+		        subtext: 'data from 118.89.233.100',
+		        sublink: '',
+		        left: 'center'
+		    },
+		    tooltip : {
+		        trigger: 'item'
+		    },
+		    bmap: {
+		        center: [ 108.9397195892,34.2366513767],
+		        zoom: 12,
+		        roam: true,
+		        mapStyle: {
+		            styleJson: [
+          {
+                    "featureType": "land",
+                    "elementType": "geometry",
+                    "stylers": {
+                              "color": "#212121"
+                    }
+          },
+          {
+                    "featureType": "building",
+                    "elementType": "geometry",
+                    "stylers": {
+                              "color": "#2b2b2b"
+                    }
+          },
+          {
+                    "featureType": "highway",
+                    "elementType": "all",
+                    "stylers": {
+                              "color": "#999999"
+                    }
+          },
+          {
+                    "featureType": "arterial",
+                    "elementType": "geometry",
+                    "stylers": {
+                              "color": "#999999"
+                    }
+          },
+          {
+                    "featureType": "green",
+                    "elementType": "geometry",
+                    "stylers": {
+                              "color": "#1b1b1b"
+                    }
+          },
+          {
+                    "featureType": "water",
+                    "elementType": "geometry",
+                    "stylers": {
+                              "color": "#181818"
+                    }
+          },
+          {
+                    "featureType": "subway",
+                    "elementType": "geometry.stroke",
+                    "stylers": {
+                              "color": "#181818"
+                    }
+          },
+          {
+                    "featureType": "railway",
+                    "elementType": "geometry",
+                    "stylers": {
+                              "lightness": -52
+                    }
+          },
+          {
+                    "featureType": "all",
+                    "elementType": "labels.text.stroke",
+                    "stylers": {
+                              "color": "#313131"
+                    }
+          },
+          {
+                    "featureType": "all",
+                    "elementType": "labels.text.fill",
+                    "stylers": {
+                              "color": "#8b8787"
+                    }
+          },
+          {
+                    "featureType": "manmade",
+                    "elementType": "geometry",
+                    "stylers": {
+                              "color": "#1b1b1b"
+                    }
+          },
+          {
+                    "featureType": "local",
+                    "elementType": "geometry",
+                    "stylers": {
+                              "color": "#999999"
+                    }
+          },
+          {
+                    "featureType": "subway",
+                    "elementType": "all",
+                    "stylers": {
+                              "lightness": -65,
+                              "visibility": "off"
+                    }
+          },
+          {
+                    "featureType": "railway",
+                    "elementType": "all",
+                    "stylers": {
+                              "lightness": -40,
+                              "visibility": "off"
+                    }
+          },
+          {
+                    "featureType": "poi",
+                    "elementType": "all",
+                    "stylers": {
+                              "color": "#8b8787",
+                              "weight": "1",
+                              "lightness": -29,
+                              "visibility": "off"
+                    }
+          },
+          {
+                    "featureType": "highway",
+                    "elementType": "labels",
+                    "stylers": {
+                              "visibility": "off"
+                    }
+          },
+          {
+                    "featureType": "boundary",
+                    "elementType": "all",
+                    "stylers": {
+                              "color": "#ffffff"
+                    }
+          },
+          {
+                    "featureType": "label",
+                    "elementType": "labels.text.fill",
+                    "stylers": {
+                              "visibility": "off"
+                    }
+          }
+]
+
+		        }
+		    },
+		    series : [
+		        {
+		            name: '',
+		            type: 'scatter',
+		            coordinateSystem: 'bmap',
+		            data: convertData(data),
+		            symbolSize: function (val) {
+		                return val[2] / 10;
+		            },
+		            label: {
+		                normal: {
+		                    formatter: '{b}',
+		                    position: 'right',
+		                    show: false
+		                },
+		                emphasis: {
+		                    show: true
+		                }
+		            },
+		            itemStyle: {
+		                normal: {
+		                    color:'red' 
+		                }
+		            }
+		        },
+		        {
+		            name: '',
+		            type: 'effectScatter',
+		            coordinateSystem: 'bmap',
+		            data: convertData(data.sort(function (a, b) {
+		                return b.value - a.value;
+		            }).slice(0, 6)),
+		            symbolSize: function (val) {
+		                return val[2] / 10;
+		            },
+		            showEffectOn: 'render',
+		            rippleEffect: {
+		                brushType: 'stroke'
+		            },
+		            hoverAnimation: true,
+		            label: {
+		                normal: {
+		                    formatter: '{b}',
+		                    position: 'right',
+		                    show: true
+		                }
+		            },
+		            itemStyle: {
+		                normal: {
+		                    color: 'red',
+		                    shadowBlur: 10,
+		                    shadowColor: '#333'
+		                }
+		            },
+		            zlevel: 1
+		        }
+		    ]
+		};
+
+		
+
+		chart.setOption(option)
+
+		// 获取bmap對象
+		var ecModel = chart._model;
+		var bmap = null;
+		ecModel.eachComponent('bmap', function (bmapModel) {			
+			if(bmap == null){
+				 bmap = bmapModel.__bmap;
+			}
+		});
+		// bmap.addEventListener("click",function(e){
+  //           $.ajax({
+  //           	url:'http://118.89.233.100/map/index/index/by'
+  //           })
+  //       });
+	</script>
+</body>
+</html>
