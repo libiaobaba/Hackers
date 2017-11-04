@@ -5,6 +5,14 @@
 
 	<link rel="stylesheet" type="text/css" href="css/reset.css">
 	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+<!-- 小滑块插件 -->
+	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+	
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 	<style type="text/css">
 		body {
 			overflow-y: hidden;
@@ -38,6 +46,13 @@
 		#topButton .glyphicon-chevron-right {
 			right: 0.5em;
 		}
+
+		#buttomButton {
+			position: fixed;
+			bottom: 0;
+			width: 35vw;
+			height: 7vw;
+		}
 	</style>
 </head>
 <body>
@@ -51,8 +66,23 @@
 
 	<div id="map-wrap" style="height: 100vw"></div>
 
+	<div id="buttomButton">
+		
+		<div id="slider"></div>
+	</div>
 
 
+	<script type="text/javascript">
+	$(document).ready(function() {
+        $("#slider").slider({
+           change: function( event, ui ) {
+
+               var aNum = Math.ceil(ui.value*0.24)
+               console.log(aNum)
+             }
+         });
+      });
+	</script>
 		
 	<!-- 模态框（Modal） -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -78,11 +108,13 @@
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 
+	
+
 
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=AkdIIYA1NOzj8G9NFt9VRcVsCkgLG4FS"></script>
 	<script type="text/javascript" src="js/echarts.min.js"></script>
 	<script type="text/javascript" src="js/bmap.js"></script>
-	<script type="text/javascript" src="js/jquery.min.js"></script>
+	
 	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
@@ -912,5 +944,6 @@
 			})
 		}
 	</script>
+	
 </body>
 </html>
