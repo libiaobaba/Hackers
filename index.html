@@ -6,13 +6,6 @@
 	<link rel="stylesheet" type="text/css" href="css/reset.css">
 	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
 
-
-<!-- 小滑块插件 -->
-	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-	
-	<script type="text/javascript" src="js/jquery.min.js"></script>
-	
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 	<style type="text/css">
 		body {
 			overflow-y: hidden;
@@ -47,12 +40,13 @@
 			right: 0.5em;
 		}
 
-		#buttomButton {
+		#slider {
 			position: fixed;
 			bottom: 0;
 			width: 35vw;
 			height: 7vw;
 		}
+
 	</style>
 </head>
 <body>
@@ -66,23 +60,16 @@
 
 	<div id="map-wrap" style="height: 100vw"></div>
 
-	<div id="buttomButton">
-		
-		<div id="slider"></div>
+	
+	
+	<div id="slider">
+		<div class="input-append date form_datetime">
+		    <input size="16" type="text" value="" readonly>
+		    <span class="add-on"><i class="icon-th"></i></span>
+		</div>
 	</div>
+	
 
-
-	<script type="text/javascript">
-	$(document).ready(function() {
-        $("#slider").slider({
-           change: function( event, ui ) {
-
-               var aNum = Math.ceil(ui.value*0.24)
-               console.log(aNum)
-             }
-         });
-      });
-	</script>
 		
 	<!-- 模态框（Modal） -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -112,11 +99,17 @@
 
 
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=AkdIIYA1NOzj8G9NFt9VRcVsCkgLG4FS"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/echarts.min.js"></script>
 	<script type="text/javascript" src="js/bmap.js"></script>
 	
-	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 
+	<script type="text/javascript">
+	    $(".form_datetime").datetimepicker({
+	        format: "dd MM yyyy - hh:ii"
+	    });
+	</script>    
 
 	<script type="text/javascript">
 		var data = [
@@ -407,7 +400,7 @@
 		bmap.addEventListener("click",function(e){
 			console.log(e)
 			// alert('a')
-            $('#today_iframe').attr('src','today.html?longitude='+e.point.lng+'&latitude='+e.point.lat+'&date='+'2017-10-29'+'&type='+'demand');
+            $('#today_iframe').attr('src','today.html?longitude='+e.point.lng+'&latitude='+e.point.lat+'&date='+'2017-10-29'+'&type='+allType[nowIndex]);
             $('#myModal').modal('show')
         });
 
@@ -420,9 +413,11 @@
 		var allType = ['demand','distribute','money','response','satisfy']
 		var allTypeName = ['搭车需求量','出租车分布','车费分布','接单时间','打车难易度']
 
+		var nowIndex = 0
 		function moveLeft(now) {
 			var nowCenterId = $('#topButton center').attr('id')
-			var nowIndex,leftIndex
+			
+			var leftIndex
 			for (var i =  0; i < allType.length ; i++) {
 				nowIndex = i
 				if( nowCenterId == allType[i] )
@@ -685,7 +680,7 @@
 
 		function moveRight(now) {
 			var nowCenterId = $('#topButton center').attr('id')
-			var nowIndex,rightIndex
+			var rightIndex
 			for (var i =  0; i < allType.length ; i++) {
 				nowIndex = i
 				if( nowCenterId == allType[i] )
@@ -945,5 +940,6 @@
 		}
 	</script>
 	
+
 </body>
 </html>
