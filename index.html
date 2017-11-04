@@ -2,16 +2,45 @@
 <html>
 <head>
 	<title>ECharts demo</title>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
 
 </head>
 <body>
 	<div id="map-wrap" style="height: 100vw;"></div>
 
-	
+		
+	<!-- 模态框（Modal） -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" 
+							aria-hidden="true">×
+					</button>
+					<h4 class="modal-title" id="myModalLabel">
+						单日数据可视化
+					</h4>
+				</div>
+				<div class="modal-body">
+					<iframe src="" id="today_iframe" frameborder="0" height="500px;" scrolling="no"></iframe>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" 
+							data-dismiss="modal">关闭
+					</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=AkdIIYA1NOzj8G9NFt9VRcVsCkgLG4FS"></script>
 	<script type="text/javascript" src="js/echarts.min.js"></script>
 	<script type="text/javascript" src="js/bmap.js"></script>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 
 	<script type="text/javascript">
 		var data = [
@@ -66,7 +95,7 @@
 		        text: '出行平台数据可视化',
 		        subtext: 'data from 118.89.233.100',
 		        sublink: '',
-		        left: 'center'
+		        left: 'center',
 		    },
 		    tooltip : {
 		        trigger: 'item'
@@ -275,6 +304,14 @@
 
 		chart.setOption(option)
 
+		
+	</script>
+
+	<!-- 具体区位折线 -->
+	<script type="text/javascript">
+
+		
+
 		// 获取bmap對象
 		var ecModel = chart._model;
 		var bmap = null;
@@ -283,11 +320,15 @@
 				 bmap = bmapModel.__bmap;
 			}
 		});
-		// bmap.addEventListener("click",function(e){
-  //           $.ajax({
-  //           	url:'http://118.89.233.100/map/index/index/by'
-  //           })
-  //       });
+		bmap.addEventListener("click",function(e){
+			console.log(e)
+			// alert('a')
+            $('#today_iframe').attr('src','today.html?longitude='+e.point.lng+'&latitude='+e.point.lat+'&date='+'2017-10-29'+'&type='+'demand');
+            $('#myModal').modal('show')
+        });
+
+		// todayChart.setOption(today_option)
+
 	</script>
 </body>
 </html>

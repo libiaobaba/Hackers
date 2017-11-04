@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ECharts demo</title>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+
+	<div id="today" style="height:100vw;"></div>
+		
+	<!-- 模态框（Modal） -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" 
+							aria-hidden="true">×
+					</button>
+					<h4 class="modal-title" id="myModalLabel">
+						单日数据可视化
+					</h4>
+				</div>
+				<div class="modal-body">
+					<iframe src="today.html"></iframe>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" 
+							data-dismiss="modal">关闭
+					</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=AkdIIYA1NOzj8G9NFt9VRcVsCkgLG4FS"></script>
+	<script type="text/javascript" src="js/echarts.min.js"></script>
+	<script type="text/javascript" src="js/bmap.js"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+	<script type="text/javascript">
+
+	
+		
+	</script>
+
+	<!-- 具体区位折线 -->
+	<script type="text/javascript">
+
+		var todayChart = echarts.init(document.getElementById('today'))
+
+		todayChart.title = '极坐标系下的堆叠柱状图';
+
+		today_option = {
+		    angleAxis: {
+		        type: 'category',
+		        data: ['0:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00','7:00','8:00','9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00'],
+		        z: 10
+		    },
+		    radiusAxis: {
+		    },
+		    polar: {
+		    },
+		    series: [{
+		        type: 'bar',
+		        data: [0,2, 4, 6, 1, 3, 2, 1],
+		        coordinateSystem: 'polar',
+		        // name: 'B',
+		        // stack: 'a'
+		    }],
+		    legend: {
+		        show: true,
+		        data: ['A', 'B', 'C']
+		    }
+		};
+
+		const lng = GetQueryString('longitude')
+		const lat = GetQueryString('latitude')
+		const date = GetQueryString('date')
+		const type = GetQueryString('type')
+
+		// alert(lng)
+        $.ajax({
+        	url:'http://118.89.233.100/map/index/index/byPosition',
+        	type:'GET',
+			dataType:'JSON',
+			async:false,
+			data:{longitude:lng,latitude:lat,date:'2017-10-29',type:'demand'},
+			success:function(res) {
+				console.log(res) 
+				for (var i = 0; i < res.data.length; i++) {
+					// res.data[i]
+					today_option.series[0].data[i] = res.data[i] 
+				}
+				todayChart.setOption(today_option)
+				console.log(today_option.series)
+			}
+        })
+        
+        function GetQueryString(name)
+		{
+		     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		     var r = window.location.search.substr(1).match(reg);
+		     if(r!=null)return  unescape(r[2]); return null;
+		}
+
+		// todayChart.setOption(today_option)
+
+	</script>
+</body>
+</html>
