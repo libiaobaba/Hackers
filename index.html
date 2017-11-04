@@ -459,12 +459,6 @@
 				 bmap = bmapModel.__bmap;
 			}
 		});
-		bmap.addEventListener("click",function(e){
-			console.log(e)
-			// alert('a')
-            $('#today_iframe').attr('src','today.html?longitude='+e.point.lng+'&latitude='+e.point.lat+'&date='+'2017-10-29'+'&type='+'demand');
-            $('#myModal').modal('show')
-        });
 
 		// todayChart.setOption(today_option)
 
@@ -474,10 +468,11 @@
 
 		var allType = ['demand','distribute','money','response','satisfy']
 		var allTypeName = ['搭车需求量','出租车分布','车费分布','接单时间','打车难易度']
+		var	nowIndex = 0
 
 		function moveLeft(now) {
 			var nowCenterId = $('#topButton center').attr('id')
-			var nowIndex,leftIndex
+			var leftIndex
 			for (var i =  0; i < allType.length ; i++) {
 				nowIndex = i
 				if( nowCenterId == allType[i] )
@@ -500,7 +495,7 @@
 					type:'GET',
 					dataType:'JSON',
 					async:false,
-					data:{type:allType[leftIndex],date:data,hour:hour},
+					data:{type:allType[leftIndex],date:date,hour:hour},
 					success:function(res) {
 						console.log(res) 
 						for (var i = res.data.length - 1; i >= 0; i--) {
@@ -755,7 +750,7 @@
 
 		function moveRight(now) {
 			var nowCenterId = $('#topButton center').attr('id')
-			var nowIndex,rightIndex
+			var rightIndex
 			for (var i =  0; i < allType.length ; i++) {
 				nowIndex = i
 				if( nowCenterId == allType[i] )
@@ -778,7 +773,7 @@
 					type:'GET',
 					dataType:'JSON',
 					async:false,
-					data:{type:allType[rightIndex],date:data,hour:hour},
+					data:{type:allType[rightIndex],date:date,hour:hour},
 					success:function(res) {
 						console.log(res) 
 						for (var i = res.data.length - 1; i >= 0; i--) {
@@ -1290,5 +1285,13 @@
 		})
 	</script>
 	
+	<script type="text/javascript">
+		bmap.addEventListener("click",function(e){
+			console.log(e)
+			// alert('a')
+            $('#today_iframe').attr('src','today.html?longitude='+e.point.lng+'&latitude='+e.point.lat+'&date='+date+'&type='+allType[nowIndex]);
+            $('#myModal').modal('show')
+        });
+	</script>
 </body>
 </html>
