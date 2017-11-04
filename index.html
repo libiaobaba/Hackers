@@ -4,10 +4,52 @@
 	<title>ECharts demo</title>
 	<link rel="stylesheet" type="text/css" href="css/reset.css">
 	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
-
+	<style type="text/css">
+		body {
+			overflow-y: hidden;
+		}
+		#topButton {
+			background-color: #09c9db;
+			margin: 0 auto;
+			width: 240px;
+			height: 40px;
+			position: fixed;
+			top: 0;
+			/*right: 50vw;*/
+			z-index: 100000;
+			/*padding: 15px;*/
+			border-radius:0 0 1em 1em ;
+		}
+		#topButton center {
+			color: white;
+			line-height: 40px;
+			font-size: 1.7em;
+		}
+		#topButton i {
+			color: white;
+			line-height: 40px;
+			font-size: 1.7em;
+			position: absolute;
+		}
+		#topButton .glyphicon-chevron-left {
+			left: 0.5em;
+		}
+		#topButton .glyphicon-chevron-right {
+			right: 0.5em;
+		}
+	</style>
 </head>
 <body>
+	<div id="topButton">
+		<!-- <img src="img/slide-left.png">
+		<img src="img/slide-right.png"> -->		
+		<i class="glyphicon glyphicon-chevron-left" id="left" onclick="moveLeft()"></i>
+		<i class="glyphicon glyphicon-chevron-right" id="right" onclick="moveRight()"></i>
+		<center id="demand">搭车需求量</center>
+	</div>
+
 	<div id="map-wrap" style="height: 100vw"></div>
+
 
 		
 	<!-- 模态框（Modal） -->
@@ -58,7 +100,7 @@
 			type:'GET',
 			dataType:'JSON',
 			async:false,
-			data:{type:'demand',date:'2017-10-30',hour:'2'},
+			data:{type:$('#topButton center').attr('id'),date:'2017-10-30',hour:'2'},
 			success:function(res) {
 				console.log(res) 
 				for (var i = res.data.length - 1; i >= 0; i--) {
@@ -331,6 +373,524 @@
 
 		// todayChart.setOption(today_option)
 
+	</script>
+
+	<script type="text/javascript">
+
+		var allType = ['demand','distribute','money','response','satisfy']
+		var allTypeName = ['搭车需求量','出租车分布','车费分布','接单时间','打车难易度']
+
+		function moveLeft(now) {
+			var nowCenterId = $('#topButton center').attr('id')
+			var nowIndex,leftIndex
+			for (var i =  0; i < allType.length ; i++) {
+				nowIndex = i
+				if( nowCenterId == allType[i] )
+					break;
+			}
+			// alert(nowIndex)
+			if ( nowIndex == 0 ) {
+				leftIndex = 4
+			} else {
+				leftIndex = nowIndex - 1
+			}
+
+			$('#topButton center').fadeOut('fast',function() {
+				$('#topButton center').html(allTypeName[leftIndex])
+				$('#topButton center').fadeIn('fast')
+				$('#topButton center').attr('id',allType[leftIndex])
+
+				$.ajax({
+					url:'http://118.89.233.100/map/index/index/byDate',
+					type:'GET',
+					dataType:'JSON',
+					async:false,
+					data:{type:allType[leftIndex],date:'2017-10-30',hour:'2'},
+					success:function(res) {
+						console.log(res) 
+						for (var i = res.data.length - 1; i >= 0; i--) {
+							// res.data[i]
+							geoCoordMap[''+i+''] = [res.data[i].longitude,res.data[i].latitude]
+							data[i] = {
+								name: ''+i+'',
+								value: res.data[i].value*50
+							}
+						}
+
+						option = {
+								    title: {
+								        text: '',
+								        subtext: '',
+								        sublink: '',
+								        left: 'center',
+								    },
+								    tooltip : {
+								        trigger: 'item'
+								    },
+								    bmap: {
+								        center: [ 108.9397195892,34.2366513767],
+								        zoom: 12,
+								        roam: true,
+								        mapStyle: {
+								            styleJson: [
+						          {
+						                    "featureType": "land",
+						                    "elementType": "geometry",
+						                    "stylers": {
+						                              "color": "#212121"
+						                    }
+						          },
+						          {
+						                    "featureType": "building",
+						                    "elementType": "geometry",
+						                    "stylers": {
+						                              "color": "#2b2b2b"
+						                    }
+						          },
+						          {
+						                    "featureType": "highway",
+						                    "elementType": "all",
+						                    "stylers": {
+						                              "color": "#999999"
+						                    }
+						          },
+						          {
+						                    "featureType": "arterial",
+						                    "elementType": "geometry",
+						                    "stylers": {
+						                              "color": "#999999"
+						                    }
+						          },
+						          {
+						                    "featureType": "green",
+						                    "elementType": "geometry",
+						                    "stylers": {
+						                              "color": "#1b1b1b"
+						                    }
+						          },
+						          {
+						                    "featureType": "water",
+						                    "elementType": "geometry",
+						                    "stylers": {
+						                              "color": "#181818"
+						                    }
+						          },
+						          {
+						                    "featureType": "subway",
+						                    "elementType": "geometry.stroke",
+						                    "stylers": {
+						                              "color": "#181818"
+						                    }
+						          },
+						          {
+						                    "featureType": "railway",
+						                    "elementType": "geometry",
+						                    "stylers": {
+						                              "lightness": -52
+						                    }
+						          },
+						          {
+						                    "featureType": "all",
+						                    "elementType": "labels.text.stroke",
+						                    "stylers": {
+						                              "color": "#313131"
+						                    }
+						          },
+						          {
+						                    "featureType": "all",
+						                    "elementType": "labels.text.fill",
+						                    "stylers": {
+						                              "color": "#8b8787"
+						                    }
+						          },
+						          {
+						                    "featureType": "manmade",
+						                    "elementType": "geometry",
+						                    "stylers": {
+						                              "color": "#1b1b1b"
+						                    }
+						          },
+						          {
+						                    "featureType": "local",
+						                    "elementType": "geometry",
+						                    "stylers": {
+						                              "color": "#999999"
+						                    }
+						          },
+						          {
+						                    "featureType": "subway",
+						                    "elementType": "all",
+						                    "stylers": {
+						                              "lightness": -65,
+						                              "visibility": "off"
+						                    }
+						          },
+						          {
+						                    "featureType": "railway",
+						                    "elementType": "all",
+						                    "stylers": {
+						                              "lightness": -40,
+						                              "visibility": "off"
+						                    }
+						          },
+						          {
+						                    "featureType": "poi",
+						                    "elementType": "all",
+						                    "stylers": {
+						                              "color": "#8b8787",
+						                              "weight": "1",
+						                              "lightness": -29,
+						                              "visibility": "off"
+						                    }
+						          },
+						          {
+						                    "featureType": "highway",
+						                    "elementType": "labels",
+						                    "stylers": {
+						                              "visibility": "off"
+						                    }
+						          },
+						          {
+						                    "featureType": "boundary",
+						                    "elementType": "all",
+						                    "stylers": {
+						                              "color": "#ffffff"
+						                    }
+						          },
+						          {
+						                    "featureType": "label",
+						                    "elementType": "labels.text.fill",
+						                    "stylers": {
+						                              "visibility": "off"
+						                    }
+						          }
+						]
+
+								        }
+								    },
+								    series : [
+								        {
+								            name: '',
+								            type: 'scatter',
+								            coordinateSystem: 'bmap',
+								            data: convertData(data),
+								            symbolSize: function (val) {
+								                return val[2] / 10;
+								            },
+								            label: {
+								                normal: {
+								                    formatter: '{b}',
+								                    position: 'right',
+								                    show: false
+								                },
+								                emphasis: {
+								                    show: true
+								                }
+								            },
+								            itemStyle: {
+								                normal: {
+								                    color: '#01e7fc',
+								                    opacity: 0.8,
+								                }
+								            }
+								        },
+								        {
+								            name: '',
+								            type: 'effectScatter',
+								            coordinateSystem: 'bmap',
+								            data: convertData(data.sort(function (a, b) {
+								                return b.value - a.value;
+								            }).slice(0, 6)),
+								            symbolSize: function (val) {
+								                return val[2] / 10;
+								            },
+								            showEffectOn: 'render',
+								            rippleEffect: {
+								                brushType: 'stroke'
+								            },
+								            hoverAnimation: true,
+								            label: {
+								                normal: {
+								                    formatter: '{b}',
+								                    position: 'right',
+								                    show: true
+								                }
+								            },
+								            itemStyle: {
+								                normal: {
+								                    color: '#01e7fc',
+								                    opacity: 0.8,
+								                    shadowBlur: 10,
+								                    shadowColor: '#333',
+								                }
+								            },
+								            zlevel: 1
+								        }
+								    ]
+								};
+
+						chart.setOption(option)
+					}
+				})
+
+				
+			})
+		}
+
+		function moveRight(now) {
+			var nowCenterId = $('#topButton center').attr('id')
+			var nowIndex,rightIndex
+			for (var i =  0; i < allType.length ; i++) {
+				nowIndex = i
+				if( nowCenterId == allType[i] )
+					break;
+			}
+			// alert(nowIndex)
+			if ( nowIndex == 4 ) {
+				rightIndex = 0
+			} else {
+				rightIndex = nowIndex + 1
+			}
+
+			$('#topButton center').fadeOut('fast',function() {
+				$('#topButton center').html(allTypeName[rightIndex])
+				$('#topButton center').fadeIn('fast')
+				$('#topButton center').attr('id',allType[rightIndex])
+
+				$.ajax({
+					url:'http://118.89.233.100/map/index/index/byDate',
+					type:'GET',
+					dataType:'JSON',
+					async:false,
+					data:{type:allType[rightIndex],date:'2017-10-30',hour:'2'},
+					success:function(res) {
+						console.log(res) 
+						for (var i = res.data.length - 1; i >= 0; i--) {
+							// res.data[i]
+							geoCoordMap[''+i+''] = [res.data[i].longitude,res.data[i].latitude]
+							data[i] = {
+								name: ''+i+'',
+								value: res.data[i].value*50
+							}
+						}
+
+						option = {
+								    title: {
+								        text: '',
+								        subtext: '',
+								        sublink: '',
+								        left: 'center',
+								    },
+								    tooltip : {
+								        trigger: 'item'
+								    },
+								    bmap: {
+								        center: [ 108.9397195892,34.2366513767],
+								        zoom: 12,
+								        roam: true,
+								        mapStyle: {
+								            styleJson: [
+						          {
+						                    "featureType": "land",
+						                    "elementType": "geometry",
+						                    "stylers": {
+						                              "color": "#212121"
+						                    }
+						          },
+						          {
+						                    "featureType": "building",
+						                    "elementType": "geometry",
+						                    "stylers": {
+						                              "color": "#2b2b2b"
+						                    }
+						          },
+						          {
+						                    "featureType": "highway",
+						                    "elementType": "all",
+						                    "stylers": {
+						                              "color": "#999999"
+						                    }
+						          },
+						          {
+						                    "featureType": "arterial",
+						                    "elementType": "geometry",
+						                    "stylers": {
+						                              "color": "#999999"
+						                    }
+						          },
+						          {
+						                    "featureType": "green",
+						                    "elementType": "geometry",
+						                    "stylers": {
+						                              "color": "#1b1b1b"
+						                    }
+						          },
+						          {
+						                    "featureType": "water",
+						                    "elementType": "geometry",
+						                    "stylers": {
+						                              "color": "#181818"
+						                    }
+						          },
+						          {
+						                    "featureType": "subway",
+						                    "elementType": "geometry.stroke",
+						                    "stylers": {
+						                              "color": "#181818"
+						                    }
+						          },
+						          {
+						                    "featureType": "railway",
+						                    "elementType": "geometry",
+						                    "stylers": {
+						                              "lightness": -52
+						                    }
+						          },
+						          {
+						                    "featureType": "all",
+						                    "elementType": "labels.text.stroke",
+						                    "stylers": {
+						                              "color": "#313131"
+						                    }
+						          },
+						          {
+						                    "featureType": "all",
+						                    "elementType": "labels.text.fill",
+						                    "stylers": {
+						                              "color": "#8b8787"
+						                    }
+						          },
+						          {
+						                    "featureType": "manmade",
+						                    "elementType": "geometry",
+						                    "stylers": {
+						                              "color": "#1b1b1b"
+						                    }
+						          },
+						          {
+						                    "featureType": "local",
+						                    "elementType": "geometry",
+						                    "stylers": {
+						                              "color": "#999999"
+						                    }
+						          },
+						          {
+						                    "featureType": "subway",
+						                    "elementType": "all",
+						                    "stylers": {
+						                              "lightness": -65,
+						                              "visibility": "off"
+						                    }
+						          },
+						          {
+						                    "featureType": "railway",
+						                    "elementType": "all",
+						                    "stylers": {
+						                              "lightness": -40,
+						                              "visibility": "off"
+						                    }
+						          },
+						          {
+						                    "featureType": "poi",
+						                    "elementType": "all",
+						                    "stylers": {
+						                              "color": "#8b8787",
+						                              "weight": "1",
+						                              "lightness": -29,
+						                              "visibility": "off"
+						                    }
+						          },
+						          {
+						                    "featureType": "highway",
+						                    "elementType": "labels",
+						                    "stylers": {
+						                              "visibility": "off"
+						                    }
+						          },
+						          {
+						                    "featureType": "boundary",
+						                    "elementType": "all",
+						                    "stylers": {
+						                              "color": "#ffffff"
+						                    }
+						          },
+						          {
+						                    "featureType": "label",
+						                    "elementType": "labels.text.fill",
+						                    "stylers": {
+						                              "visibility": "off"
+						                    }
+						          }
+						]
+
+								        }
+								    },
+								    series : [
+								        {
+								            name: '',
+								            type: 'scatter',
+								            coordinateSystem: 'bmap',
+								            data: convertData(data),
+								            symbolSize: function (val) {
+								                return val[2] / 10;
+								            },
+								            label: {
+								                normal: {
+								                    formatter: '{b}',
+								                    position: 'right',
+								                    show: false
+								                },
+								                emphasis: {
+								                    show: true
+								                }
+								            },
+								            itemStyle: {
+								                normal: {
+								                    color: '#01e7fc',
+								                    opacity: 0.8,
+								                }
+								            }
+								        },
+								        {
+								            name: '',
+								            type: 'effectScatter',
+								            coordinateSystem: 'bmap',
+								            data: convertData(data.sort(function (a, b) {
+								                return b.value - a.value;
+								            }).slice(0, 6)),
+								            symbolSize: function (val) {
+								                return val[2] / 10;
+								            },
+								            showEffectOn: 'render',
+								            rippleEffect: {
+								                brushType: 'stroke'
+								            },
+								            hoverAnimation: true,
+								            label: {
+								                normal: {
+								                    formatter: '{b}',
+								                    position: 'right',
+								                    show: true
+								                }
+								            },
+								            itemStyle: {
+								                normal: {
+								                    color: '#01e7fc',
+								                    opacity: 0.8,
+								                    shadowBlur: 10,
+								                    shadowColor: '#333',
+								                }
+								            },
+								            zlevel: 1
+								        }
+								    ]
+								};
+
+						chart.setOption(option)
+					}
+				})
+			})
+		}
 	</script>
 </body>
 </html>
