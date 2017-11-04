@@ -6,7 +6,6 @@
 	<link rel="stylesheet" type="text/css" href="css/reset.css">
 	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker.min.css">
-
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
 	<style type="text/css">
@@ -26,9 +25,9 @@
 			z-index: 100000;
 			/*padding: 15px;*/
 			border-radius:0 0 40px 40px;
-			background-image: -moz-linear-gradient( 45deg, rgb(9,142,218) 0%, rgb(9,201,218) 100%);
-			background-image: -webkit-linear-gradient( 45deg, rgb(9,142,218) 0%, rgb(9,201,218) 100%);
-			background-image: -ms-linear-gradient( 45deg, rgb(9,142,218) 0%, rgb(9,201,218) 100%);
+			background-image: -moz-linear-gradient( 135deg, rgb(9,142,218) 0%, rgb(9,201,218) 100%);
+			background-image: -webkit-linear-gradient( 135deg, rgb(9,142,218) 0%, rgb(9,201,218) 100%);
+			background-image: -ms-linear-gradient( 135deg, rgb(9,142,218) 0%, rgb(9,201,218) 100%);
 			box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.35);
 		}
 		#topButton center {
@@ -90,10 +89,10 @@
 		}
 		.logof {
 			position: fixed;
-			left:10px;
-			top: 10px;
-			height: 60px;
-		} 
+			left:12px;
+			top: 12px;
+			height: 40px;
+		}
 
 		#slide {
 			position: fixed;
@@ -104,11 +103,11 @@
 			width:250px;
 			height: 35px;
 		}
+
 	</style>
 </head>
 <body>
 	<div id="topButton">
-
 		<i class="glyphicon glyphicon-chevron-left" id="left" onclick="moveLeft()"></i>
 		<i class="glyphicon glyphicon-chevron-right" id="right" onclick="moveRight()"></i>
 		<center id="demand">搭车需求量</center>
@@ -145,6 +144,12 @@
 					<iframe src="" id="today_iframe" frameborder="0" height="300px;" scrolling="no">
 					</iframe>
 				</div>
+
+		<!-- 		<div class="modal-footer">
+					<button type="button" class="btn btn-default" 
+							data-dismiss="modal">关闭
+					</button>
+				</div> -->
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
@@ -211,9 +216,9 @@
 		        sublink: '',
 		        left: 'center',
 		    },
-		    tooltip : {
-		        trigger: 'item'
-		    },
+		    // tooltip : {
+		    //     trigger: 'item'
+		    // },
 		    bmap: {
 		        center: [ 108.9397195892,34.2366513767],
 		        zoom: 12,
@@ -370,9 +375,9 @@
 		            		return val[2]/20;
 		            		}
 		            	else if (val[2]/20 < 40) {
-		            		return 0.6*(val[2]/20-20)+20 ;
+		            		return 0.5*(val[2]/20-20)+20 ;
 		            		}
-		            	return 0.4*(val[2]/20-40)+40;	
+		            	return 0.2*(val[2]/20-40)+40;	
 		            	},
 
 		            label: {
@@ -387,12 +392,22 @@
 		            },
 		            itemStyle: {
 		                normal: {
-		                    // color: '#01e7fc',
+		                    color: '#01e7fc',
+
 		                    // opacity: 0.2,
 
 							shadowBlur: 10,
 							shadowColor: 'rgba(25, 100, 150, 0.5)',
 							shadowOffsetY: 5,
+
+							// color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+							// offset: 0,
+							// color: 'rgb(129, 227, 238)'
+							// }, {
+							// offset: 1,
+							// color: 'rgb(25, 183, 207)'
+							// }]),
+
 							color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
 							offset: 0,
 							color: 'rgb(129, 227, 238)'
@@ -400,6 +415,7 @@
 							offset: 1,
 							color: 'rgb(25, 183, 207)'
 							}]),
+
 							opacity: 0.5,
 		                }
 		            }
@@ -669,9 +685,10 @@
 								            		return val[2]/20;
 								            		}
 								            	else if (val[2]/20 < 40) {
-								            		return 0.6*(val[2]/20-20)+20 ;
+
+								            		return 0.5*(val[2]/20-20)+20 ;
 								            		}
-								            		return 0.4*(val[2]/20-40)+40;	
+								            		return 0.2*(val[2]/20-40)+40;	
 								            	},
 								            label: {
 								                normal: {
@@ -685,19 +702,21 @@
 								            },
 								            itemStyle: {
 								                normal: {
-								                    // color: '#01e7fc',
-								                    // opacity: 0.2,
 
-								                    shadowBlur: 10,
+													color: '#01e7fc',
+													// opacity: 0.2,
+
+													shadowBlur: 10,
 													shadowColor: 'rgba(25, 100, 150, 0.5)',
 													shadowOffsetY: 5,
-													color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
-													    offset: 0,
-													    color: 'rgb(129, 227, 238)'
-													}, {
-													    offset: 1,
-													    color: 'rgb(25, 183, 207)'
-													}]),
+													// color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+													// offset: 0,
+													// color: 'rgb(129, 227, 238)'
+													// }, {
+													// offset: 1,
+													// color: 'rgb(25, 183, 207)'
+													// }]),
+
 													opacity: 0.5,
 								                }
 								            }
@@ -947,9 +966,10 @@
 								            		return val[2]/20;
 								            	}
 								            	else if (val[2]/20 < 40) {
-								            		return 0.6*(val[2]/20-20)+20 ;
+								            		return 0.5*(val[2]/20-20)+20 ;
 								            	}
-								            		return 0.4*(val[2]/20-40)+40;	
+								            		return 0.2*(val[2]/20-40)+40;	
+
 								           		},
 								            label: {
 								                normal: {
@@ -963,19 +983,19 @@
 								            },
 								            itemStyle: {
 								                normal: {
-								                    // color: '#01e7fc',
+								                    color: '#01e7fc',
 								                    // opacity: 0.2,
 
-								                    shadowBlur: 10,
+													shadowBlur: 10,
 													shadowColor: 'rgba(25, 100, 150, 0.5)',
 													shadowOffsetY: 5,
-													color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
-													    offset: 0,
-													    color: 'rgb(129, 227, 238)'
-													}, {
-													    offset: 1,
-													    color: 'rgb(25, 183, 207)'
-													}]),
+													// color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+													// offset: 0,
+													// color: 'rgb(129, 227, 238)'
+													// }, {
+													// offset: 1,
+													// color: 'rgb(25, 183, 207)'
+													// }]),
 													opacity: 0.5,
 								                }
 								            }
