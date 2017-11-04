@@ -6,13 +6,12 @@
 	<link rel="stylesheet" type="text/css" href="css/reset.css">
 	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
 
-
-<!-- 小滑块插件 -->
-	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+	<!-- 小滑块插件 -->
+<!-- 	<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/> -->
 	
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<!-- 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script> -->
 	<style type="text/css">
 		body {
 			overflow-y: hidden;
@@ -22,7 +21,7 @@
 			width: 600px;
 			height: 80px;
 			position: fixed;
-			margin: 0 auto;
+			margin: 0 auto;	
 			top: 0;
 			left: 0;
 			right: 0;
@@ -30,9 +29,9 @@
 			z-index: 100000;
 			/*padding: 15px;*/
 			border-radius:0 0 40px 40px;
-			background-image: -moz-linear-gradient( 45deg, rgb(9,142,218) 0%, rgb(9,201,218) 100%);
-			background-image: -webkit-linear-gradient( 45deg, rgb(9,142,218) 0%, rgb(9,201,218) 100%);
-			background-image: -ms-linear-gradient( 45deg, rgb(9,142,218) 0%, rgb(9,201,218) 100%);
+			background-image: -moz-linear-gradient( 135deg, rgb(9,142,218) 0%, rgb(9,201,218) 100%);
+			background-image: -webkit-linear-gradient( 135deg, rgb(9,142,218) 0%, rgb(9,201,218) 100%);
+			background-image: -ms-linear-gradient( 135deg, rgb(9,142,218) 0%, rgb(9,201,218) 100%);
 			box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.35);
 		}
 		#topButton center {
@@ -59,11 +58,50 @@
 			width: 35vw;
 			height: 7vw;
 		}
+
+		#myModal {
+			margin-top: 120px;
+		}
+		.modal-dialog {
+
+		}
+		.modal-content {
+			margin: 0 auto;
+			border-radius: 40px;
+			width: 400px;
+
+		}
+		.modal-header {
+			border: none;
+		}
+		.modal-title {
+			text-align: center;
+		}
+		.modal-body {
+
+		}
+		.modal-footer {
+			text-align: center;
+			border: none;
+		}
+		.btn.btn-default {
+			font-size: 16px;
+			border: none;
+		}
+		.btn.btn-default:hover {
+			background-color: white;
+		}
+		.logof {
+			position: fixed;
+			left:10px;
+			top: 10px;
+			height: 60px;
+		} 
 	</style>
 </head>
 <body>
 	<div id="topButton">
-		<!-- <img src="img/slide-left.png">
+		<!-- <img src="img/slide-left.png">	
 		<img src="img/slide-right.png"> -->		
 		<i class="glyphicon glyphicon-chevron-left" id="left" onclick="moveLeft()"></i>
 		<i class="glyphicon glyphicon-chevron-right" id="right" onclick="moveRight()"></i>
@@ -72,52 +110,31 @@
 
 	<div id="map-wrap" style="height: 100vw"></div>
 
-
-	<div id="buttomButton">
-		
-		<div id="slider"></div>
+	<div >
+		<img class="logof" src="img/logo.png" />
 	</div>
-
-
-	<script type="text/javascript">
-	$(document).ready(function() {
-        $("#slider").slider({
-           change: function( event, ui ) {
-
-               var aNum = Math.ceil(ui.value*0.24)
-               console.log(aNum)
-             }
-         });
-      });
-	</script>
-		
 
 	<!-- 模态框（Modal） -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" 
-							aria-hidden="true">×
-					</button>
 					<h4 class="modal-title" id="myModalLabel">
-						单日数据可视化
+						单日数据	
 					</h4>
 				</div>
 				<div class="modal-body">
-					<iframe src="" id="today_iframe" frameborder="0" height="500px;" scrolling="no"></iframe>
+					<iframe src="" id="today_iframe" frameborder="0" height="300px;" scrolling="no">
+					</iframe>
 				</div>
-				<div class="modal-footer">
+		<!-- 		<div class="modal-footer">
 					<button type="button" class="btn btn-default" 
 							data-dismiss="modal">关闭
 					</button>
-				</div>
+				</div> -->
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
-
-	
-
 
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=AkdIIYA1NOzj8G9NFt9VRcVsCkgLG4FS"></script>
 	<script type="text/javascript" src="js/echarts.min.js"></script>
@@ -321,10 +338,14 @@
                               "visibility": "off"
                     }
           }
-]
+	]
 
 		        }
 		    },
+
+
+
+
 		    series : [
 		        {
 		            name: '',
@@ -332,11 +353,14 @@
 		            coordinateSystem: 'bmap',
 		            data: convertData(data),
 		            symbolSize: function (val) {
-		            	if (val[2]/20 > 60) {
-		            		return 60
-		            	}
-		                return val[2] / 20;
-		            },
+		            	if (val[2]/20 < 20) {
+		            		return val[2]/20;
+		            		}
+		            	else if (val[2]/20 < 40) {
+		            		return 0.5*(val[2]/20-20)+20 ;
+		            		}
+		            	return 0.2*(val[2]/20-40)+40;	
+		            	},
 
 		            label: {
 		                normal: {
@@ -351,7 +375,19 @@
 		            itemStyle: {
 		                normal: {
 		                    color: '#01e7fc',
-		                    opacity: 0.6,
+		                    // opacity: 0.2,
+
+							shadowBlur: 10,
+							shadowColor: 'rgba(25, 100, 150, 0.5)',
+							shadowOffsetY: 5,
+							// color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+							// offset: 0,
+							// color: 'rgb(129, 227, 238)'
+							// }, {
+							// offset: 1,
+							// color: 'rgb(25, 183, 207)'
+							// }]),
+							opacity: 0.5,
 		                }
 		            }
 		        },
@@ -393,11 +429,8 @@
 		    ]
 		};
 
-		
-
 		chart.setOption(option)
 
-		
 	</script>
 
 	<!-- 具体区位折线 -->
@@ -624,11 +657,14 @@
 								            coordinateSystem: 'bmap',
 								            data: convertData(data),
 								            symbolSize: function (val) {
-								            	if (val[2]/20 > 60) {
-								            		return 60
-								            	}
-								                return val[2] / 20;
-								            },
+								            	if (val[2]/20 < 20) {
+								            		return val[2]/20;
+								            		}
+								            	else if (val[2]/20 < 40) {
+								            		return 0.5*(val[2]/20-20)+20 ;
+								            		}
+								            		return 0.2*(val[2]/20-40)+40;	
+								            	},
 								            label: {
 								                normal: {
 								                    formatter: '{b}',
@@ -641,8 +677,20 @@
 								            },
 								            itemStyle: {
 								                normal: {
-								                    color: '#01e7fc',
-								                    opacity: 0.6,
+													color: '#01e7fc',
+													// opacity: 0.2,
+
+													shadowBlur: 10,
+													shadowColor: 'rgba(25, 100, 150, 0.5)',
+													shadowOffsetY: 5,
+													// color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+													// offset: 0,
+													// color: 'rgb(129, 227, 238)'
+													// }, {
+													// offset: 1,
+													// color: 'rgb(25, 183, 207)'
+													// }]),
+													opacity: 0.5,
 								                }
 								            }
 								        },
@@ -887,11 +935,14 @@
 								            coordinateSystem: 'bmap',
 								            data: convertData(data),
 								            symbolSize: function (val) {
-								            	if (val[2]/20 > 60) {
-								            		return 60
+								            	if (val[2]/20 < 20) {
+								            		return val[2]/20;
 								            	}
-								                return val[2] / 20
-								            },
+								            	else if (val[2]/20 < 40) {
+								            		return 0.5*(val[2]/20-20)+20 ;
+								            	}
+								            		return 0.2*(val[2]/20-40)+40;	
+								           		},
 								            label: {
 								                normal: {
 								                    formatter: '{b}',
@@ -905,7 +956,19 @@
 								            itemStyle: {
 								                normal: {
 								                    color: '#01e7fc',
-								                    opacity: 0.6,
+								                    // opacity: 0.2,
+
+													shadowBlur: 10,
+													shadowColor: 'rgba(25, 100, 150, 0.5)',
+													shadowOffsetY: 5,
+													// color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+													// offset: 0,
+													// color: 'rgb(129, 227, 238)'
+													// }, {
+													// offset: 1,
+													// color: 'rgb(25, 183, 207)'
+													// }]),
+													opacity: 0.5,
 								                }
 								            }
 								        },
