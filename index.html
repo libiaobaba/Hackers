@@ -5,7 +5,10 @@
 
 	<link rel="stylesheet" type="text/css" href="css/reset.css">
 	<link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker.min.css">
 
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js"></script>
 	<style type="text/css">
 		body {
 			overflow-y: hidden;
@@ -15,7 +18,7 @@
 			width: 600px;
 			height: 80px;
 			position: fixed;
-			margin: 0 auto;
+			margin: 0 auto;	
 			top: 0;
 			left: 0;
 			right: 0;
@@ -46,19 +49,66 @@
 			right: 1em;
 		}
 
-		#slider {
+		#buttomButton {
 			position: fixed;
 			bottom: 0;
 			width: 35vw;
 			height: 7vw;
 		}
 
+		#myModal {
+			margin-top: 120px;
+		}
+		.modal-dialog {
+
+		}
+		.modal-content {
+			margin: 0 auto;
+			border-radius: 40px;
+			width: 400px;
+
+		}
+		.modal-header {
+			border: none;
+		}
+		.modal-title {
+			text-align: center;
+		}
+		.modal-body {
+
+		}
+		.modal-footer {
+			text-align: center;
+			border: none;
+		}
+		.btn.btn-default {
+			font-size: 16px;
+			border: none;
+		}
+		.btn.btn-default:hover {
+			background-color: white;
+		}
+		.logof {
+			position: fixed;
+			left:10px;
+			top: 10px;
+			height: 60px;
+		} 
+
+		#slide {
+			position: fixed;
+			top:135px;
+			right: 0;
+			left:0;
+			margin: 0 auto;
+			width:250px;
+			height: 35px;
+		}
 	</style>
 </head>
 <body>
 	<div id="topButton">
-		<!-- <img src="img/slide-left.png">
-		<img src="img/slide-right.png"> -->		
+
 		<i class="glyphicon glyphicon-chevron-left" id="left" onclick="moveLeft()"></i>
 		<i class="glyphicon glyphicon-chevron-right" id="right" onclick="moveRight()"></i>
 		<center id="demand">搭车需求量</center>
@@ -66,56 +116,41 @@
 
 	<div id="map-wrap" style="height: 100vw"></div>
 
-	
-	<div id="slider">
-		<div class="input-append date form_datetime">
-		    <input size="16" type="text" value="" readonly>
-		    <span class="add-on"><i class="icon-th"></i></span>
-		</div>
+	<div >
+		<img class="logof" src="img/logo.png" />
 	</div>
-	
 
+	<div id="slide">
+		<input type="input" name="" style="width:100%;height:100%">
+	</div>
+
+	<script type="text/javascript">
 		
+	</script>
 
 	<!-- 模态框（Modal） -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" 
-							aria-hidden="true">×
-					</button>
 					<h4 class="modal-title" id="myModalLabel">
-						单日数据可视化
+						单日数据	
 					</h4>
 				</div>
 				<div class="modal-body">
-					<iframe src="" id="today_iframe" frameborder="0" height="500px;" scrolling="no"></iframe>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" 
-							data-dismiss="modal">关闭
-					</button>
+					<iframe src="" id="today_iframe" frameborder="0" height="300px;" scrolling="no">
+					</iframe>
 				</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 
-	
-
-
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=AkdIIYA1NOzj8G9NFt9VRcVsCkgLG4FS"></script>
-	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/echarts.min.js"></script>
 	<script type="text/javascript" src="js/bmap.js"></script>
 	
-	<script src="js/bootstrap.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-	<script type="text/javascript">
-	    $(".form_datetime").datetimepicker({
-	        format: "dd MM yyyy - hh:ii"
-	    });
-	</script>    
 
 	<script type="text/javascript">
 		var data = [
@@ -312,10 +347,14 @@
                               "visibility": "off"
                     }
           }
-]
+	]
 
 		        }
 		    },
+
+
+
+
 		    series : [
 		        {
 		            name: '',
@@ -323,11 +362,14 @@
 		            coordinateSystem: 'bmap',
 		            data: convertData(data),
 		            symbolSize: function (val) {
-		            	if (val[2]/20 > 60) {
-		            		return 60
-		            	}
-		                return val[2] / 20;
-		            },
+		            	if (val[2]/20 < 20) {
+		            		return val[2]/20;
+		            		}
+		            	else if (val[2]/20 < 40) {
+		            		return 0.6*(val[2]/20-20)+20 ;
+		            		}
+		            	return 0.4*(val[2]/20-40)+40;	
+		            	},
 
 		            label: {
 		                normal: {
@@ -341,8 +383,20 @@
 		            },
 		            itemStyle: {
 		                normal: {
-		                    color: '#01e7fc',
-		                    opacity: 0.6,
+		                    // color: '#01e7fc',
+		                    // opacity: 0.2,
+
+							shadowBlur: 10,
+							shadowColor: 'rgba(25, 100, 150, 0.5)',
+							shadowOffsetY: 5,
+							color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+							offset: 0,
+							color: 'rgb(129, 227, 238)'
+							}, {
+							offset: 1,
+							color: 'rgb(25, 183, 207)'
+							}]),
+							opacity: 0.5,
 		                }
 		            }
 		        },
@@ -384,11 +438,8 @@
 		    ]
 		};
 
-		
-
 		chart.setOption(option)
 
-		
 	</script>
 
 	<!-- 具体区位折线 -->
@@ -407,7 +458,7 @@
 		bmap.addEventListener("click",function(e){
 			console.log(e)
 			// alert('a')
-            $('#today_iframe').attr('src','today.html?longitude='+e.point.lng+'&latitude='+e.point.lat+'&date='+'2017-10-29'+'&type='+allType[nowIndex]);
+            $('#today_iframe').attr('src','today.html?longitude='+e.point.lng+'&latitude='+e.point.lat+'&date='+'2017-10-29'+'&type='+'demand');
             $('#myModal').modal('show')
         });
 
@@ -420,11 +471,9 @@
 		var allType = ['demand','distribute','money','response','satisfy']
 		var allTypeName = ['搭车需求量','出租车分布','车费分布','接单时间','打车难易度']
 
-		var nowIndex = 0
 		function moveLeft(now) {
 			var nowCenterId = $('#topButton center').attr('id')
-			
-			var leftIndex
+			var nowIndex,leftIndex
 			for (var i =  0; i < allType.length ; i++) {
 				nowIndex = i
 				if( nowCenterId == allType[i] )
@@ -617,11 +666,14 @@
 								            coordinateSystem: 'bmap',
 								            data: convertData(data),
 								            symbolSize: function (val) {
-								            	if (val[2]/20 > 60) {
-								            		return 60
-								            	}
-								                return val[2] / 20;
-								            },
+								            	if (val[2]/20 < 20) {
+								            		return val[2]/20;
+								            		}
+								            	else if (val[2]/20 < 40) {
+								            		return 0.6*(val[2]/20-20)+20 ;
+								            		}
+								            		return 0.4*(val[2]/20-40)+40;	
+								            	},
 								            label: {
 								                normal: {
 								                    formatter: '{b}',
@@ -634,8 +686,20 @@
 								            },
 								            itemStyle: {
 								                normal: {
-								                    color: '#01e7fc',
-								                    opacity: 0.6,
+								                    // color: '#01e7fc',
+								                    // opacity: 0.2,
+
+								                    shadowBlur: 10,
+													shadowColor: 'rgba(25, 100, 150, 0.5)',
+													shadowOffsetY: 5,
+													color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+													    offset: 0,
+													    color: 'rgb(129, 227, 238)'
+													}, {
+													    offset: 1,
+													    color: 'rgb(25, 183, 207)'
+													}]),
+													opacity: 0.5,
 								                }
 								            }
 								        },
@@ -687,7 +751,7 @@
 
 		function moveRight(now) {
 			var nowCenterId = $('#topButton center').attr('id')
-			var rightIndex
+			var nowIndex,rightIndex
 			for (var i =  0; i < allType.length ; i++) {
 				nowIndex = i
 				if( nowCenterId == allType[i] )
@@ -880,11 +944,14 @@
 								            coordinateSystem: 'bmap',
 								            data: convertData(data),
 								            symbolSize: function (val) {
-								            	if (val[2]/20 > 60) {
-								            		return 60
+								            	if (val[2]/20 < 20) {
+								            		return val[2]/20;
 								            	}
-								                return val[2] / 20
-								            },
+								            	else if (val[2]/20 < 40) {
+								            		return 0.6*(val[2]/20-20)+20 ;
+								            	}
+								            		return 0.4*(val[2]/20-40)+40;	
+								           		},
 								            label: {
 								                normal: {
 								                    formatter: '{b}',
@@ -897,8 +964,20 @@
 								            },
 								            itemStyle: {
 								                normal: {
-								                    color: '#01e7fc',
-								                    opacity: 0.6,
+								                    // color: '#01e7fc',
+								                    // opacity: 0.2,
+
+								                    shadowBlur: 10,
+													shadowColor: 'rgba(25, 100, 150, 0.5)',
+													shadowOffsetY: 5,
+													color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+													    offset: 0,
+													    color: 'rgb(129, 227, 238)'
+													}, {
+													    offset: 1,
+													    color: 'rgb(25, 183, 207)'
+													}]),
+													opacity: 0.5,
 								                }
 								            }
 								        },
@@ -947,6 +1026,5 @@
 		}
 	</script>
 	
-
 </body>
 </html>
