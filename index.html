@@ -292,6 +292,9 @@
 		            coordinateSystem: 'bmap',
 		            data: convertData(data),
 		            symbolSize: function (val) {
+		            	if (val[2]/10 > 50) {
+		            		return 50
+		            	}
 		                return val[2] / 10;
 		            },
 		            label: {
@@ -319,6 +322,9 @@
 		                return b.value - a.value;
 		            }).slice(0, 6)),
 		            symbolSize: function (val) {
+		            	if (val[2]/10 > 50) {
+		            		return 50
+		            	}
 		                return val[2] / 10;
 		            },
 		            showEffectOn: 'render',
@@ -577,6 +583,9 @@
 								            coordinateSystem: 'bmap',
 								            data: convertData(data),
 								            symbolSize: function (val) {
+								            	if (val[2]/10 > 50) {
+								            		return 50
+								            	}
 								                return val[2] / 10;
 								            },
 								            label: {
@@ -604,6 +613,9 @@
 								                return b.value - a.value;
 								            }).slice(0, 6)),
 								            symbolSize: function (val) {
+								            	if (val[2]/10 > 50) {
+								            		return 50
+								            	}
 								                return val[2] / 10;
 								            },
 								            showEffectOn: 'render',
@@ -834,7 +846,10 @@
 								            coordinateSystem: 'bmap',
 								            data: convertData(data),
 								            symbolSize: function (val) {
-								                return val[2] / 10;
+								            	if (val[2]/10 > 50) {
+								            		return 50
+								            	}
+								                return val[2] / 10
 								            },
 								            label: {
 								                normal: {
@@ -861,6 +876,9 @@
 								                return b.value - a.value;
 								            }).slice(0, 6)),
 								            symbolSize: function (val) {
+								            	if (val[2]/10 > 50) {
+								            		return 50
+								            	}
 								                return val[2] / 10;
 								            },
 								            showEffectOn: 'render',
