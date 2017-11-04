@@ -10,33 +10,39 @@
 			overflow-y: hidden;
 		}
 		#topButton {
-			background-color: #09c9db;
-			margin: 0 auto;
-			width: 240px;
-			height: 40px;
+			padding-top: 20px;
+			width: 600px;
+			height: 80px;
 			position: fixed;
+			margin: 0 auto;
 			top: 0;
+			left: 0;
+			right: 0;
 			/*right: 50vw;*/
 			z-index: 100000;
 			/*padding: 15px;*/
-			border-radius:0 0 1em 1em ;
+			border-radius:0 0 40px 40px;
+			background-image: -moz-linear-gradient( 45deg, rgb(9,142,218) 0%, rgb(9,201,218) 100%);
+			background-image: -webkit-linear-gradient( 45deg, rgb(9,142,218) 0%, rgb(9,201,218) 100%);
+			background-image: -ms-linear-gradient( 45deg, rgb(9,142,218) 0%, rgb(9,201,218) 100%);
+			box-shadow: 0px 10px 20px 0px rgba(0, 0, 0, 0.35);
 		}
 		#topButton center {
 			color: white;
 			line-height: 40px;
-			font-size: 1.7em;
+			font-size: 36px;
 		}
 		#topButton i {
 			color: white;
-			line-height: 40px;
-			font-size: 1.7em;
+			line-height: 80px;
+			font-size: 30px;	
 			position: absolute;
 		}
 		#topButton .glyphicon-chevron-left {
-			left: 0.5em;
+			left: 1em;
 		}
 		#topButton .glyphicon-chevron-right {
-			right: 0.5em;
+			right: 1em;
 		}
 	</style>
 </head>
@@ -51,9 +57,6 @@
 
 	<div id="map-wrap" style="height: 100vw"></div>
 
-
-
-		
 	<!-- 模态框（Modal） -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -292,11 +295,12 @@
 		            coordinateSystem: 'bmap',
 		            data: convertData(data),
 		            symbolSize: function (val) {
-		            	if (val[2]/10 > 50) {
-		            		return 50
+		            	if (val[2]/20 > 60) {
+		            		return 60
 		            	}
-		                return val[2] / 10;
+		                return val[2] / 20;
 		            },
+
 		            label: {
 		                normal: {
 		                    formatter: '{b}',
@@ -310,45 +314,45 @@
 		            itemStyle: {
 		                normal: {
 		                    color: '#01e7fc',
-		                    opacity: 0.8,
+		                    opacity: 0.6,
 		                }
 		            }
 		        },
-		        {
-		            name: '',
-		            type: 'effectScatter',
-		            coordinateSystem: 'bmap',
-		            data: convertData(data.sort(function (a, b) {
-		                return b.value - a.value;
-		            }).slice(0, 6)),
-		            symbolSize: function (val) {
-		            	if (val[2]/10 > 50) {
-		            		return 50
-		            	}
-		                return val[2] / 10;
-		            },
-		            showEffectOn: 'render',
-		            rippleEffect: {
-		                brushType: 'stroke'
-		            },
-		            hoverAnimation: true,
-		            label: {
-		                normal: {
-		                    formatter: '{b}',
-		                    position: 'right',
-		                    show: true
-		                }
-		            },
-		            itemStyle: {
-		                normal: {
-		                    color: '#01e7fc',
-		                    opacity: 0.8,
-		                    shadowBlur: 10,
-		                    shadowColor: '#333',
-		                }
-		            },
-		            zlevel: 1
-		        }
+		        // {
+		        //     name: '',
+		        //     type: 'effectScatter',
+		        //     coordinateSystem: 'bmap',
+		        //     data: convertData(data.sort(function (a, b) {
+		        //         return b.value - a.value;
+		        //     }).slice(0, 6)),
+		        //     symbolSize: function (val) {
+		        //     	if (val[2]/20 > 40) {
+		        //     		return 40
+		        //     	}
+		        //         return val[2] / 20;
+		        //     },
+		        //     showEffectOn: 'render',
+		        //     rippleEffect: {
+		        //         brushType: 'stroke'
+		        //     },
+		        //     hoverAnimation: true,
+		        //     label: {
+		        //         normal: {
+		        //             formatter: '{b}',
+		        //             position: 'right',
+		        //             show: true
+		        //         }
+		        //     },
+		        //     itemStyle: {
+		        //         normal: {
+		        //             color: '#01e7fc',
+		        //             opacity: 0.,
+		        //             shadowBlur: 10,
+		        //             shadowColor: '#333',
+		        //         }
+		        //     },
+		        //     zlevel: 1
+		        // }
 		    ]
 		};
 
@@ -583,10 +587,10 @@
 								            coordinateSystem: 'bmap',
 								            data: convertData(data),
 								            symbolSize: function (val) {
-								            	if (val[2]/10 > 50) {
-								            		return 50
+								            	if (val[2]/20 > 60) {
+								            		return 60
 								            	}
-								                return val[2] / 10;
+								                return val[2] / 20;
 								            },
 								            label: {
 								                normal: {
@@ -601,45 +605,45 @@
 								            itemStyle: {
 								                normal: {
 								                    color: '#01e7fc',
-								                    opacity: 0.8,
+								                    opacity: 0.6,
 								                }
 								            }
 								        },
-								        {
-								            name: '',
-								            type: 'effectScatter',
-								            coordinateSystem: 'bmap',
-								            data: convertData(data.sort(function (a, b) {
-								                return b.value - a.value;
-								            }).slice(0, 6)),
-								            symbolSize: function (val) {
-								            	if (val[2]/10 > 50) {
-								            		return 50
-								            	}
-								                return val[2] / 10;
-								            },
-								            showEffectOn: 'render',
-								            rippleEffect: {
-								                brushType: 'stroke'
-								            },
-								            hoverAnimation: true,
-								            label: {
-								                normal: {
-								                    formatter: '{b}',
-								                    position: 'right',
-								                    show: true
-								                }
-								            },
-								            itemStyle: {
-								                normal: {
-								                    color: '#01e7fc',
-								                    opacity: 0.8,
-								                    shadowBlur: 10,
-								                    shadowColor: '#333',
-								                }
-								            },
-								            zlevel: 1
-								        }
+								        // {
+								        //     name: '',
+								        //     type: 'effectScatter',
+								        //     coordinateSystem: 'bmap',
+								        //     data: convertData(data.sort(function (a, b) {
+								        //         return b.value - a.value;
+								        //     }).slice(0, 6)),
+								        //     symbolSize: function (val) {
+								        //     	if (val[2]/20 > 40) {
+								        //     		return 40
+								        //     	}
+								        //         return val[2] / 20;
+								        //     },
+								        //     showEffectOn: 'render',
+								        //     rippleEffect: {
+								        //         brushType: 'stroke'
+								        //     },
+								        //     hoverAnimation: true,
+								        //     label: {
+								        //         normal: {
+								        //             formatter: '{b}',
+								        //             position: 'right',
+								        //             show: true
+								        //         }
+								        //     },
+								        //     itemStyle: {
+								        //         normal: {
+								        //             color: '#01e7fc',
+								        //             opacity: 0.6,
+								        //             shadowBlur: 10,
+								        //             shadowColor: '#333',
+								        //         }
+								        //     },
+								        //     zlevel: 1
+								        // }
 								    ]
 								};
 
@@ -846,10 +850,10 @@
 								            coordinateSystem: 'bmap',
 								            data: convertData(data),
 								            symbolSize: function (val) {
-								            	if (val[2]/10 > 50) {
-								            		return 50
+								            	if (val[2]/20 > 60) {
+								            		return 60
 								            	}
-								                return val[2] / 10
+								                return val[2] / 20
 								            },
 								            label: {
 								                normal: {
@@ -864,45 +868,45 @@
 								            itemStyle: {
 								                normal: {
 								                    color: '#01e7fc',
-								                    opacity: 0.8,
+								                    opacity: 0.6,
 								                }
 								            }
 								        },
-								        {
-								            name: '',
-								            type: 'effectScatter',
-								            coordinateSystem: 'bmap',
-								            data: convertData(data.sort(function (a, b) {
-								                return b.value - a.value;
-								            }).slice(0, 6)),
-								            symbolSize: function (val) {
-								            	if (val[2]/10 > 50) {
-								            		return 50
-								            	}
-								                return val[2] / 10;
-								            },
-								            showEffectOn: 'render',
-								            rippleEffect: {
-								                brushType: 'stroke'
-								            },
-								            hoverAnimation: true,
-								            label: {
-								                normal: {
-								                    formatter: '{b}',
-								                    position: 'right',
-								                    show: true
-								                }
-								            },
-								            itemStyle: {
-								                normal: {
-								                    color: '#01e7fc',
-								                    opacity: 0.8,
-								                    shadowBlur: 10,
-								                    shadowColor: '#333',
-								                }
-								            },
-								            zlevel: 1
-								        }
+								        // {
+								        //     name: '',
+								        //     type: 'effectScatter',
+								        //     coordinateSystem: 'bmap',
+								        //     data: convertData(data.sort(function (a, b) {
+								        //         return b.value - a.value;
+								        //     }).slice(0, 6)),
+								        //     symbolSize: function (val) {
+								        //     	if (val[2]/20 > 40) {
+								        //     		return 40
+								        //     	}
+								        //         return val[2] / 20;
+								        //     },
+								        //     showEffectOn: 'render',
+								        //     rippleEffect: {
+								        //         brushType: 'stroke'
+								        //     },
+								        //     hoverAnimation: true,
+								        //     label: {
+								        //         normal: {
+								        //             formatter: '{b}',
+								        //             position: 'right',
+								        //             show: true
+								        //         }
+								        //     },
+								        //     itemStyle: {
+								        //         normal: {
+								        //             color: '#01e7fc',
+								        //             opacity: 0.6,
+								        //             shadowBlur: 10,
+								        //             shadowColor: '#333',
+								        //         }
+								        //     },
+								        //     zlevel: 1
+								        // }
 								    ]
 								};
 
