@@ -64,7 +64,7 @@
         	type:'GET',
 			dataType:'JSON',
 			async:false,
-			data:{longitude:lng,latitude:lat,date:'2017-10-29',type:'demand'},
+			data:{longitude:lng,latitude:lat,date:date,type:type},
 			success:function(res) {
 				console.log(res) 
 				for (var i = 0; i < res.data.length; i++) {
