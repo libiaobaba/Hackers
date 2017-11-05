@@ -143,9 +143,10 @@
 		$('#dateSlide').datetimepicker({
 			startDate: '2017-10-29',
 			endDate:'2017-11-5',
-			format:'yyyy/m/dd hh时',
-			autoclose:1,
-			minView:'day'
+			format:'yyyy-m-dd hh时',
+			minView:'day',
+			autoclose: true,
+			date: '2017-11-4',
 		});
 	</script>
 
@@ -195,7 +196,6 @@
 			async:false,
 			data:{type:$('#topButton center').attr('id'),date:date,hour:hour},
 			success:function(res) {
-				console.log(res) 
 				for (var i = res.data.length - 1; i >= 0; i--) {
 					// res.data[i]
 					geoCoordMap[''+i+''] = [res.data[i].longitude,res.data[i].latitude]
@@ -508,7 +508,6 @@
 					async:false,
 					data:{type:allType[leftIndex],date:date,hour:hour},
 					success:function(res) {
-						console.log(res) 
 						for (var i = res.data.length - 1; i >= 0; i--) {
 							// res.data[i]
 							geoCoordMap[''+i+''] = [res.data[i].longitude,res.data[i].latitude]
@@ -776,7 +775,6 @@
 					async:false,
 					data:{type:allType[rightIndex],date:date,hour:hour},
 					success:function(res) {
-						console.log(res) 
 						for (var i = res.data.length - 1; i >= 0; i--) {
 							// res.data[i]
 							geoCoordMap[''+i+''] = [res.data[i].longitude,res.data[i].latitude]
@@ -1019,8 +1017,10 @@
 	<script type="text/javascript">
 		$('#dateSlide').on('changeDate',function(ev){
 			date = $('#dateSlide').val().replace(/\-\-\-../,'')
+			date = date.substring(0,10)
 			// alert(date)
 			hour = $('#dateSlide').val().replace(/.*\-\-\-/,'')
+			hour = hour.substring(12,13)
 			// alert(hour)
 			$.ajax({
 				url:'http://118.89.233.100/map/index/index/byDate',
@@ -1222,41 +1222,7 @@
 								                }
 								            }
 								        },
-								        // {
-								        //     name: '',
-								        //     type: 'effectScatter',
-								        //     coordinateSystem: 'bmap',
-								        //     data: convertData(data.sort(function (a, b) {
-								        //         return b.value - a.value;
-								        //     }).slice(0, 6)),
-								        //     symbolSize: function (val) {
-								        //     	if (val[2]/20 > 40) {
-								        //     		return 40
-								        //     	}
-								        //         return val[2] / 20;
-								        //     },
-								        //     showEffectOn: 'render',
-								        //     rippleEffect: {
-								        //         brushType: 'stroke'
-								        //     },
-								        //     hoverAnimation: true,
-								        //     label: {
-								        //         normal: {
-								        //             formatter: '{b}',
-								        //             position: 'right',
-								        //             show: true
-								        //         }
-								        //     },
-								        //     itemStyle: {
-								        //         normal: {
-								        //             color: '#01e7fc',
-								        //             opacity: 0.6,
-								        //             shadowBlur: 10,
-								        //             shadowColor: '#333',
-								        //         }
-								        //     },
-								        //     zlevel: 1
-								        // }
+								       
 								    ]
 								};
 
@@ -1268,7 +1234,6 @@
 	
 	<script type="text/javascript">
 		bmap.addEventListener("click",function(e){
-			console.log(e)
 			// alert('a')
             $('#today_iframe').attr('src','today.html?longitude='+e.point.lng+'&latitude='+e.point.lat+'&date='+date+'&type='+allType[nowIndex]);
             $('#myModal').modal('show')
